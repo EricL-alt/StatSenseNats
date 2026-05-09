@@ -24,6 +24,8 @@
 		6B594A0BC37A843698347E82 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B436B953C077C72CEE188AA8 /* OnboardingView.swift */; };
 		7AAFA81D78F607EA1EDD8355 /* ExplanationStepCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4336CEDD297DACCBBA240C77 /* ExplanationStepCard.swift */; };
 		99AFFD38DBF367C7B5813A74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3B83E27BEF8650001BA3FD8F /* Assets.xcassets */; };
+		A2F49D582FA82DE100CD9DEF /* MockCameraService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F49D572FA82DE100CD9DEF /* MockCameraService.swift */; };
+		A2F49D5A2FA83B7900CD9DEF /* DeepgramTTSService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F49D592FA83B7900CD9DEF /* DeepgramTTSService.swift */; };
 		AA1096E1AA8B95FB5314E22A /* ExplanationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7085BFB6298C523D709736D /* ExplanationEngine.swift */; };
 		B735F45540CBB432CA1F009E /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E10A8092F4546820C3D77DE /* ContentView.swift */; };
 		D77BEC86F3A72A0B4143101D /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 523813D9273D4A5CDB103CB7 /* ImagePicker.swift */; };
@@ -44,7 +46,6 @@
 		3E1AAE5379C6D4E1B3626752 /* GraphModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphModels.swift; sourceTree = "<group>"; };
 		40A21D0B70F0F724B2515847 /* SavedGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedGraph.swift; sourceTree = "<group>"; };
 		4336CEDD297DACCBBA240C77 /* ExplanationStepCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationStepCard.swift; sourceTree = "<group>"; };
-		466945FC19BF039A122C3802 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		4A53418A3B0C42DE4F8F24F6 /* SpeechDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechDelegate.swift; sourceTree = "<group>"; };
 		4E10A8092F4546820C3D77DE /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		50B397B70E76CA457574672C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -58,6 +59,10 @@
 		828A1CD7B756BA0660764F1B /* StatSense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StatSense.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		83FE1614CB2A13A73A76F782 /* AccessibilityManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityManager.swift; sourceTree = "<group>"; };
 		84235EE59E59320F0D86E889 /* AccessibilityModeIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityModeIndicator.swift; sourceTree = "<group>"; };
+		A2F49D562FA8254200CD9DEF /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		A2F49D572FA82DE100CD9DEF /* MockCameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCameraService.swift; sourceTree = "<group>"; };
+		A2F49D592FA83B7900CD9DEF /* DeepgramTTSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepgramTTSService.swift; sourceTree = "<group>"; };
+		A2F49D5B2FA83BC400CD9DEF /* DEEPGRAM_TTS_SETUP.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DEEPGRAM_TTS_SETUP.md; sourceTree = "<group>"; };
 		A47FCA0E965D906E0193B4DB /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
 		A7085BFB6298C523D709736D /* ExplanationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationEngine.swift; sourceTree = "<group>"; };
 		AA4E6C4E03584F6939ED4206 /* HighContrastViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighContrastViews.swift; sourceTree = "<group>"; };
@@ -110,13 +115,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		8A06A34E8A099905F65BD04E /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		8A4048F7D11DAB71A7329BC7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,7 +126,8 @@
 		ACF21017E4A3025F4F52483F /* StatSense */ = {
 			isa = PBXGroup;
 			children = (
-				466945FC19BF039A122C3802 /* Config.xcconfig */,
+				A2F49D562FA8254200CD9DEF /* Config.xcconfig */,
+				A2F49D5B2FA83BC400CD9DEF /* DEEPGRAM_TTS_SETUP.md */,
 			);
 			name = StatSense;
 			path = .;
@@ -145,6 +144,8 @@
 				5F5D056305D9B70B04B95400 /* GraphAnalyzer+DataExtraction.swift */,
 				7FAA8A7FCDC3DB7849734C8F /* ImageAnalyzer.swift */,
 				4A53418A3B0C42DE4F8F24F6 /* SpeechDelegate.swift */,
+				A2F49D572FA82DE100CD9DEF /* MockCameraService.swift */,
+				A2F49D592FA83B7900CD9DEF /* DeepgramTTSService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -157,7 +158,6 @@
 				2C8AED0B2313C2667EC50974 /* Resources */,
 				B0DA9DDE4A69EE6A775D8586 /* Services */,
 				E2FC2BE46CB3743FD5257815 /* Utils */,
-				8A06A34E8A099905F65BD04E /* ViewModels */,
 				D3DBC57783CFABFD986540B7 /* Views */,
 			);
 			path = StatSense;
@@ -257,9 +257,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A2F49D582FA82DE100CD9DEF /* MockCameraService.swift in Sources */,
 				E09698864D3E8E2DD5A73227 /* AccessibilityManager.swift in Sources */,
 				1F85FA0FE6F7D0D33F31791A /* AccessibilityModeIndicator.swift in Sources */,
 				5F4DC1A3277FD35A55F50F26 /* AccessibilitySettings.swift in Sources */,
+				A2F49D5A2FA83B7900CD9DEF /* DeepgramTTSService.swift in Sources */,
 				E0C38A58732753B0B1B8002B /* AccessibleButtons.swift in Sources */,
 				3D000C8BACFD6BCC73954FA5 /* CameraService.swift in Sources */,
 				319818F01EC82850CE9857D2 /* CaptureView.swift in Sources */,
@@ -350,7 +352,6 @@
 		};
 		4CF054B89B5FA3600A89D207 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 466945FC19BF039A122C3802 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -379,7 +380,6 @@
 		};
 		555F12BD47B1AFE4A44F42F8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 466945FC19BF039A122C3802 /* Config.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

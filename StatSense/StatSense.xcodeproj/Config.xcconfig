@@ -1,0 +1,14 @@
+//
+//  Config.xcconfig
+//  StatSense
+//
+//  Configuration settings file format documentation can be found at:
+//  https://help.apple.com/xcode/#/dev745c5c974
+//
+
+// Add any build configuration settings here
+// Example:
+// PRODUCT_BUNDLE_IDENTIFIER = com.yourcompany.statsense
+// MARKETING_VERSION = 1.0
+// CURRENT_PROJECT_VERSION = 1
+
