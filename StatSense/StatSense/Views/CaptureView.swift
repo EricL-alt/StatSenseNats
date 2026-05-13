@@ -6,7 +6,7 @@ struct CaptureView: View {
     @EnvironmentObject var accessibilityManager: AccessibilityManager
     @EnvironmentObject var graphAnalyzer: GraphAnalyzer
     @Environment(\.modelContext) private var modelContext
-    @StateObject private var cameraService = CameraService()
+    @StateObject private var cameraService = CameraService.create()
 
     @State private var showingImagePicker = false
     @State private var showingResults = false
@@ -155,7 +155,7 @@ struct CaptureView: View {
 
     private func analyzeImage(_ image: UIImage) {
         Task {
-            if let result = await graphAnalyzer.analyzeImage(image) {
+            if let result = await graphAnalyzer.analyzeImage(image, language: accessibilityManager.preferences.language) {
                 if let compressedData = image.jpegData(compressionQuality: 0.8) {
                     do {
                         let savedGraph = try SavedGraph(imageData: compressedData, interpretationResult: result)

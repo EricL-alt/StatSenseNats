@@ -13,6 +13,17 @@ class CameraService: NSObject, ObservableObject {
     private let photoOutput = AVCapturePhotoOutput()
     private let sessionQueue = DispatchQueue(label: "camera.session.queue")
     private var photoCompletion: ((UIImage?) -> Void)?
+    
+    /// Factory method to create the appropriate camera service
+    static func create() -> CameraService {
+        #if targetEnvironment(simulator)
+        print("📱 Running in simulator - using MockCameraService")
+        return MockCameraService()
+        #else
+        print("📱 Running on device - using CameraService")
+        return CameraService()
+        #endif
+    }
 
     override init() {
         super.init()
@@ -43,6 +54,11 @@ class CameraService: NSObject, ObservableObject {
             guard let self = self else { return }
 
             self.session.beginConfiguration()
+            defer {
+                // Always commit configuration, even if setup fails
+                self.session.commitConfiguration()
+            }
+            
             self.session.sessionPreset = .photo
 
             guard let camera = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
@@ -64,7 +80,6 @@ class CameraService: NSObject, ObservableObject {
             }
 
             self.session.addOutput(self.photoOutput)
-            self.session.commitConfiguration()
         }
     }
 

@@ -14,7 +14,7 @@ class GraphAnalyzer: ObservableObject {
     private let explanationEngine = ExplanationEngine()
     private let deepSeekService = DeepSeekService()
 
-    func analyzeImage(_ image: UIImage) async -> InterpretationResult? {
+    func analyzeImage(_ image: UIImage, language: Language) async -> InterpretationResult? {
         isAnalyzing = true
         analysisProgress = 0.0
         errorMessage = nil
@@ -72,7 +72,8 @@ class GraphAnalyzer: ObservableObject {
                 textFromImage: allText,
                 axisX: axisXString,
                 axisY: axisYString,
-                detectedContours: linesString
+                detectedContours: linesString,
+                language: language
             )
 
             if result.dataLines.isEmpty {

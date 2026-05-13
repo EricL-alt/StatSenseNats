@@ -62,7 +62,6 @@
 		A2F49D562FA8254200CD9DEF /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A2F49D572FA82DE100CD9DEF /* MockCameraService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCameraService.swift; sourceTree = "<group>"; };
 		A2F49D592FA83B7900CD9DEF /* DeepgramTTSService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepgramTTSService.swift; sourceTree = "<group>"; };
-		A2F49D5B2FA83BC400CD9DEF /* DEEPGRAM_TTS_SETUP.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DEEPGRAM_TTS_SETUP.md; sourceTree = "<group>"; };
 		A47FCA0E965D906E0193B4DB /* ResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultsView.swift; sourceTree = "<group>"; };
 		A7085BFB6298C523D709736D /* ExplanationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplanationEngine.swift; sourceTree = "<group>"; };
 		AA4E6C4E03584F6939ED4206 /* HighContrastViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighContrastViews.swift; sourceTree = "<group>"; };
@@ -127,7 +126,6 @@
 			isa = PBXGroup;
 			children = (
 				A2F49D562FA8254200CD9DEF /* Config.xcconfig */,
-				A2F49D5B2FA83BC400CD9DEF /* DEEPGRAM_TTS_SETUP.md */,
 			);
 			name = StatSense;
 			path = .;

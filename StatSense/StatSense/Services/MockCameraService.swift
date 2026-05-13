@@ -4,11 +4,30 @@ import SwiftUI
 
 #if targetEnvironment(simulator)
 class MockCameraService: CameraService {
-    override func setupSession() {
+    override init() {
+        super.init()
         // Skip actual camera setup in simulator
-        isSessionConfigured = true
         DispatchQueue.main.async {
             self.isAuthorized = true
+        }
+    }
+    
+    override func checkAuthorization() {
+        // Skip real authorization check in simulator
+        isAuthorized = true
+    }
+    
+    override func startSession() {
+        // Don't actually start the AVCaptureSession in simulator
+        DispatchQueue.main.async {
+            self.isSessionRunning = true
+        }
+    }
+    
+    override func stopSession() {
+        // Don't actually stop the AVCaptureSession in simulator
+        DispatchQueue.main.async {
+            self.isSessionRunning = false
         }
     }
     

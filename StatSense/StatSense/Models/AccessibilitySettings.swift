@@ -28,6 +28,80 @@ enum AccessibilityMode: String, CaseIterable, Identifiable, Codable {
     }
 }
 
+enum Language: String, CaseIterable, Identifiable, Codable {
+    case english = "en"
+    case spanish = "es"
+    case german = "de"
+    case french = "fr"
+    case dutch = "nl"
+    case italian = "it"
+    case japanese = "ja"
+    
+    var id: String { rawValue }
+    
+    var displayName: String {
+        switch self {
+        case .english: return "English"
+        case .spanish: return "Español"
+        case .german: return "Deutsch"
+        case .french: return "Français"
+        case .dutch: return "Nederlands"
+        case .italian: return "Italiano"
+        case .japanese: return "日本語"
+        }
+    }
+    
+    var nativeDisplayName: String {
+        switch self {
+        case .english: return "English"
+        case .spanish: return "Spanish"
+        case .german: return "German"
+        case .french: return "French"
+        case .dutch: return "Dutch"
+        case .italian: return "Italian"
+        case .japanese: return "Japanese"
+        }
+    }
+    
+    var flag: String {
+        switch self {
+        case .english: return "🇺🇸"
+        case .spanish: return "🇪🇸"
+        case .german: return "🇩🇪"
+        case .french: return "🇫🇷"
+        case .dutch: return "🇳🇱"
+        case .italian: return "🇮🇹"
+        case .japanese: return "🇯🇵"
+        }
+    }
+    
+    /// Returns the appropriate Deepgram TTS model for this language
+    var deepgramModel: String {
+        switch self {
+        case .english: return "aura-2-asteria-en"
+        case .spanish: return "aura-2-celeste-es"
+        case .german: return "aura-2-julius-de"
+        case .french: return "aura-2-agathe-fr"
+        case .dutch: return "aura-2-rhea-nl"
+        case .italian: return "aura-2-livia-it"
+        case .japanese: return "aura-2-fujin-ja"
+        }
+    }
+    
+    /// Returns ISO locale identifier for voice synthesis
+    var localeIdentifier: String {
+        switch self {
+        case .english: return "en-US"
+        case .spanish: return "es-ES"
+        case .german: return "de-DE"
+        case .french: return "fr-FR"
+        case .dutch: return "nl-NL"
+        case .italian: return "it-IT"
+        case .japanese: return "ja-JP"
+        }
+    }
+}
+
 struct SpeechSettings: Equatable, Codable {
     var rate: Float = 0.5
     var pitch: Float = 1.0
@@ -93,6 +167,7 @@ struct HapticSettings: Equatable, Codable {
 
 struct UserPreferences: Equatable, Codable {
     var primaryMode: AccessibilityMode = .combined
+    var language: Language = .english
     var speechSettings: SpeechSettings = SpeechSettings()
     var visualSettings: VisualSettings = VisualSettings()
     var hapticSettings: HapticSettings = HapticSettings()

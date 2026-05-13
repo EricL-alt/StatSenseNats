@@ -30,16 +30,21 @@ class DeepgramTTSService: NSObject, ObservableObject {
     /// Speaks text using Deepgram's Aura-2 TTS API
     /// - Parameters:
     ///   - text: The text to convert to speech
-    ///   - model: The voice model (default: aura-2-asteria-en)
+    ///   - model: The voice model (auto-selected based on language if not specified)
+    ///   - language: The language to use (will auto-select appropriate model)
     ///   - speed: Speaking rate 0.7-1.5 (default: 1.0)
     ///   - priority: If true, stops current speech and speaks immediately
     func speak(
         text: String,
-        model: String = "aura-2-asteria-en",
+        model: String? = nil,
+        language: Language,
         speed: Float = 1.0,
         priority: Bool = false
     ) async throws {
         guard !text.isEmpty else { return }
+        
+        // Use provided model or auto-select based on language
+        let selectedModel = model ?? language.deepgramModel
         
         if priority {
             await stopSpeaking()
@@ -51,7 +56,7 @@ class DeepgramTTSService: NSObject, ObservableObject {
         
         // Process queue if not already processing
         if !isProcessing {
-            await processQueue(model: model, speed: speed)
+            await processQueue(model: selectedModel, speed: speed)
         }
     }
     
@@ -80,7 +85,8 @@ class DeepgramTTSService: NSObject, ObservableObject {
         components.queryItems = [
             URLQueryItem(name: "model", value: model),
             URLQueryItem(name: "encoding", value: "mp3"),
-            URLQueryItem(name: "sample_rate", value: "24000")
+            URLQueryItem(name: "bitrate", value: "48000")
+            // No sample_rate, no container
         ]
         
         // Add speed if not default

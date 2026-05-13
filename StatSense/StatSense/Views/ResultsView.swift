@@ -41,7 +41,11 @@ struct ResultsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Done") { dismiss() }
+                    Button("Done") {
+                        // Stop any ongoing speech when user dismisses
+                        accessibilityManager.stopSpeaking()
+                        dismiss()
+                    }
                 }
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: shareResult) {
@@ -54,6 +58,10 @@ struct ResultsView: View {
             if accessibilityManager.preferences.speechSettings.autoPlay {
                 accessibilityManager.speak(result.summary, priority: true)
             }
+        }
+        .onDisappear {
+            // Stop speech when view disappears (swiped away, navigated away, etc.)
+            accessibilityManager.stopSpeaking()
         }
     }
 

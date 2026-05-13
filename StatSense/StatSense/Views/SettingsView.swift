@@ -6,6 +6,23 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack {
             Form {
+                
+                Section("Language") {
+                    Picker("Language", selection: $accessibilityManager.preferences.language) {
+                        ForEach(Language.allCases) { language in
+                            HStack {
+                                Text(language.flag)
+                                Text(language.displayName)
+                            }
+                            .tag(language)
+                        }
+                    }
+                    .pickerStyle(.navigationLink)
+                    
+                    Text("This affects both graph analysis and voice output")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
 
                 Section("Accessibility Mode") {
                     Picker("Primary Mode", selection: $accessibilityManager.preferences.primaryMode) {

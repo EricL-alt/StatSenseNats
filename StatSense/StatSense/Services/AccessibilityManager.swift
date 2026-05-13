@@ -18,6 +18,10 @@ class AccessibilityManager: ObservableObject {
 
     private var speechSynthesizer = AVSpeechSynthesizer()
     private var speechDelegate: SpeechDelegate?
+    
+    // Deepgram TTS Service
+    private let deepgramTTS = DeepgramTTSService()
+    private var useDeepgram = true // Set to false to fallback to native TTS
 
     init() {
         loadPreferences()
@@ -61,6 +65,43 @@ class AccessibilityManager: ObservableObject {
     func speak(_ text: String, priority: Bool = false) {
         guard preferences.primaryMode == .audio || preferences.primaryMode == .combined else { return }
 
+        if useDeepgram {
+            // Use Deepgram TTS
+            print("🎙️ Using Deepgram TTS for: '\(text.prefix(50))...'")
+            Task {
+                do {
+                    let speed = mapRateToDeepgramSpeed(preferences.speechSettings.rate)
+                    let language = preferences.language
+                    
+                    print("📡 Deepgram language: \(language.displayName) (\(language.rawValue)), model: \(language.deepgramModel), speed: \(speed)")
+                    
+                    currentSpeechText = text
+                    isSpeaking = true
+                    
+                    try await deepgramTTS.speak(
+                        text: text,
+                        language: language,
+                        speed: speed,
+                        priority: priority
+                    )
+                    
+                    // Update isSpeaking based on Deepgram's state
+                    isSpeaking = deepgramTTS.isSpeaking
+                    print("✅ Deepgram TTS completed successfully")
+                } catch {
+                    print("⚠️ Deepgram TTS failed, falling back to native: \(error)")
+                    // Fallback to native TTS
+                    speakWithNativeTTS(text, priority: priority)
+                }
+            }
+        } else {
+            // Use native TTS
+            print("🔊 Using native TTS (Deepgram disabled)")
+            speakWithNativeTTS(text, priority: priority)
+        }
+    }
+    
+    private func speakWithNativeTTS(_ text: String, priority: Bool) {
         if priority {
             speechSynthesizer.stopSpeaking(at: .immediate)
         }
@@ -70,7 +111,9 @@ class AccessibilityManager: ObservableObject {
         utterance.pitchMultiplier = preferences.speechSettings.pitch
         utterance.volume = preferences.speechSettings.volume
 
-        if let voice = AVSpeechSynthesisVoice(language: preferences.speechSettings.voice) {
+        // Use language-appropriate voice
+        let localeIdentifier = preferences.language.localeIdentifier
+        if let voice = AVSpeechSynthesisVoice(language: localeIdentifier) {
             utterance.voice = voice
         }
 
@@ -78,18 +121,40 @@ class AccessibilityManager: ObservableObject {
         isSpeaking = true
         speechSynthesizer.speak(utterance)
     }
+    
+    /// Maps iOS speech rate (0.0-1.0) to Deepgram speed (0.7-1.5)
+    private func mapRateToDeepgramSpeed(_ rate: Float) -> Float {
+        // iOS default rate is 0.5 (maps to 1.0 Deepgram speed)
+        // Scale: 0.0 -> 0.7, 0.5 -> 1.0, 1.0 -> 1.5
+        return 0.7 + (rate * 0.8)
+    }
 
     func stopSpeaking() {
-        speechSynthesizer.stopSpeaking(at: .immediate)
-        isSpeaking = false
+        if useDeepgram {
+            Task {
+                await deepgramTTS.stopSpeaking()
+                isSpeaking = false
+            }
+        } else {
+            speechSynthesizer.stopSpeaking(at: .immediate)
+            isSpeaking = false
+        }
     }
 
     func pauseSpeaking() {
-        speechSynthesizer.pauseSpeaking(at: .word)
+        if useDeepgram {
+            deepgramTTS.pauseSpeaking()
+        } else {
+            speechSynthesizer.pauseSpeaking(at: .word)
+        }
     }
 
     func continueSpeaking() {
-        speechSynthesizer.continueSpeaking()
+        if useDeepgram {
+            deepgramTTS.continueSpeaking()
+        } else {
+            speechSynthesizer.continueSpeaking()
+        }
     }
 
     private func setupHapticEngine() {

@@ -52,6 +52,12 @@ struct ContentView: View {
         .fullScreenCover(isPresented: $accessibilityManager.preferences.showOnboarding) {
             OnboardingView(isPresented: $accessibilityManager.preferences.showOnboarding)
         }
+        .onChange(of: selectedTab) { oldTab, newTab in
+            // Stop speech when user switches tabs
+            if oldTab != newTab {
+                accessibilityManager.stopSpeaking()
+            }
+        }
     }
 }
 

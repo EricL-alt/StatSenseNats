@@ -13,15 +13,37 @@ class DeepSeekService {
     }
     private let url = URL(string: "https://api.deepseek.com/chat/completions")!
 
-    func analyzeGraphData(textFromImage: String, axisX: String, axisY: String, detectedContours: String) async throws -> InterpretationResult {
+    func analyzeGraphData(textFromImage: String, axisX: String, axisY: String, detectedContours: String, language: Language) async throws -> InterpretationResult {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         urlRequest.addValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         urlRequest.addValue("application/json", forHTTPHeaderField: "Content-Type")
 
+        // Language-specific instruction
+        let languageInstruction: String
+        switch language {
+        case .english:
+            languageInstruction = "Provide all text output in English."
+        case .spanish:
+            languageInstruction = "Proporciona toda la salida de texto en español."
+        case .german:
+            languageInstruction = "Gib alle Textausgaben auf Deutsch aus."
+        case .french:
+            languageInstruction = "Fournissez toute la sortie de texte en français."
+        case .dutch:
+            languageInstruction = "Geef alle tekstuitvoer in het Nederlands."
+        case .italian:
+            languageInstruction = "Fornisci tutto il testo di output in italiano."
+        case .japanese:
+            languageInstruction = "すべてのテキスト出力を日本語で提供してください。"
+        }
+
         let prompt = """
         ACT AS: A world-class Accessibility Graph Interpreter for blind users.
         TASK: Convert messy OCR and Vision contour data into a structured InterpretationResult JSON.
+        
+        LANGUAGE: \(languageInstruction)
+        IMPORTANT: All "title", "label", "description", and text fields must be in \(language.displayName). Only field names and enum values remain in English.
 
         INPUT DATA:
         - OCR Text: "\(textFromImage)"
@@ -34,17 +56,18 @@ class DeepSeekService {
 
         CRITICAL FORMATTING RULES:
         1. NUMBERS MUST NOT BE IN QUOTES (e.g., "confidence": 0.9, NOT "0.9").
-        2. MISSING DATA: If no lines are found, return an empty array [] for "dataLines", NO NOT RETURN null.
-        3. AXIS: If axis labels are missing, provide a generic label like "Value" and default range [0, 100].
+        2. MISSING DATA: If no lines are found, return an empty array [] for "dataLines", DO NOT RETURN null.
+        3. AXIS: If axis labels are missing, provide a generic label like "Value" (translated to \(language.displayName)) and default range [0, 100].
+        4. ALL DESCRIPTIVE TEXT (title, labels, descriptions) MUST BE IN \(language.displayName).
 
         JSON SCHEMA & ALLOWED VALUES:
         {
           "graphType": "Line Graph" | "Bar Chart" | "Scatter Plot" | "Pie Chart" | "Diagram" | "Whiteboard" | "Unknown",
-          "title": "A descriptive title based on OCR titles/context",
-          "xAxis": { "label": "string", "minValue": number, "maxValue": number, "scale": "linear" },
-          "yAxis": { "label": "string", "minValue": number, "maxValue": number, "scale": "linear" },
+          "title": "A descriptive title based on OCR titles/context [IN \(language.displayName.uppercased())]",
+          "xAxis": { "label": "string [IN \(language.displayName.uppercased())]", "minValue": number, "maxValue": number, "scale": "linear" },
+          "yAxis": { "label": "string [IN \(language.displayName.uppercased())]", "minValue": number, "maxValue": number, "scale": "linear" },
           "dataLines": [{
-            "label": "string",
+            "label": "string [IN \(language.displayName.uppercased())]",
             "points": [{ "x": number, "y": number }],
             "segments": [{
                "startPoint": {"x": number, "y": number},
@@ -58,26 +81,27 @@ class DeepSeekService {
           "intersections": [],
           "overallTrend": "Increasing" | "Decreasing" | "Constant" | "Fluctuating" | "Exponential" | "Logarithmic",
           "confidence": 0.0 to 1.0 (float),
-          "warnings": ["string"],
+          "warnings": ["string [IN \(language.displayName.uppercased())]"],
           "explanations": [{
             "order": number,
-            "title": "string",
-            "description": "Short, clear description for ScreenReader and Haptics",
+            "title": "string [IN \(language.displayName.uppercased())]",
+            "description": "Short, clear description for ScreenReader and Haptics [IN \(language.displayName.uppercased())]",
             "trend": "Increasing" | "Decreasing" | "Constant" | "Fluctuating" | "Exponential" | "Logarithmic",
             "hapticPattern": "none" | "rising" | "falling" | "steady" | "intersection" | "attention" | "success"
           }]
         }
 
         CRITICAL:
-        1. "explanations" must be a narrative for a blind user.
+        1. "explanations" must be a narrative for a blind user IN \(language.displayName).
         2. Ensure "hapticPattern" values are lowercase and match EXACTLY: "none", "rising", "falling", "steady", "intersection", "attention", "success".
-        3. All trend and slope values must be EXACT capitalized strings as shown above.
+        3. All trend and slope values must be EXACT capitalized strings as shown above (in English, do not translate these enum values).
+        4. All user-facing text (title, labels, descriptions, warnings) must be in \(language.displayName).
         """
 
         let parameters: [String: Any] = [
             "model": "deepseek-chat",
             "messages": [
-                ["role": "system", "content": "You are a specialized JSON-only data analysis engine. You output raw, parsable JSON matching the requested schema. No conversational filler."],
+                ["role": "system", "content": "You are a specialized JSON-only data analysis engine. You output raw, parsable JSON matching the requested schema. No conversational filler. You can communicate in multiple languages."],
                 ["role": "user", "content": prompt]
             ],
             "temperature": 0.3,
