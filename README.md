@@ -1,4 +1,4 @@
-# PA-TSA States 2026 Submission (Team 2098-901): Statsense
+# TSA Nationals 2026 Submission (Team 2284-1): Statsense
 
 ## What is Statsense? 
 
