@@ -22,6 +22,7 @@ StatSense addresses this problem by:
 - **Summaries of Images**: Generates clear descriptions of graph trends, axes, and key data points.
 - **Screen Reader**: Fully compatible with voice over for accessible navigation.
 - **Adjustable Speech**: Customizable audio settings to match individual user preferences.
+- **Worldwide Compatability**: Natural speech AI supporting 7 worldwide languages from English to Japanese. 
 
 ### Accessible Visuals
 - **Adaptive UI**: A dedicated High-Contrast mode designed for users with visual impairments.
@@ -104,12 +105,15 @@ StatSense uses XcodeGen for project management to maintain a clean repository.
 3. **Configure API Keys**:
    - Open `Config.xcconfig`.
    - Add your DeepSeek API Key:
-     `DEEPSEEK_API_KEY = sk-your-key-here`
+     `DEEPSEEK_API_KEY = "sk-your-key-here"`
+   - Add your Deepgram API Key:
+     `DeepgramTTSAPIKey = "your-key-here"`
 
 4. **Run**:
    - Open `StatSense.xcodeproj` in Xcode.
    - Select your Development Team in Signing & Capabilities.
    - Build and run on a physical device to test the haptic features.
+   - Building and running on Simulator is compatable as well. 
 
 
 
